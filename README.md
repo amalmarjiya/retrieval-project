@@ -54,7 +54,7 @@ These are loaded directly at query time; **no rebuild is required** to run
 `scripts/eval_public.py`.
 
 
-## Repository structure/
+## Repository structure
 retrieval-project/
 ├── main.py                    # Entry point: run(queries) called by autograder
 ├── chunk.py                   # Section-aware chunking logic
