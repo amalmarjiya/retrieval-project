@@ -25,7 +25,9 @@ via shared synthetic entities and template patterns.
 3. **Indexing** (`index.py`) — saves chunk vectors (`index_vectors.npy`)
    and metadata (`index_meta.json`), and triggers the BM25 build.
 4. **Lexical index** (`lexical.py`) — builds a page-level BM25 index
-   (`bm25_index.json`) used as a candidate-generation signal.
+   (`bm25_index.json`). BM25 was tested as both a score component and a
+   candidate-generation signal; both variants underperformed the final
+   formula, so BM25 weight is set to 0 in the final config.
 5. **Retrieval** (`retrieve.py`) — for each query:
    - embeds the query and computes dot-product similarity against all
      chunk vectors
@@ -106,8 +108,9 @@ python build_page_signatures.py
 
 ```
 mean_ndcg@10 = 0.4582
-query_phase_time ~88s (CPU), well under the GPU time limit
+query_phase_time ~80-90s (CPU); grading runs on GPU which is significantly faster
 ```
 
 ## Video presentation
-https://drive.google.com/file/d/1RPBA-Viuve0YIvxJmTlF_ZPxvbTMgVt5/view?usp=drive_link
+
+[Link to video presentation](https://drive.google.com/file/d/1RPBA-Viuve0YIvxJmTlF_ZPxvbTMgVt5/view?usp=drive_link)
