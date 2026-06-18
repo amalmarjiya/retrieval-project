@@ -190,3 +190,7 @@ python scripts/build_index.py
   one relevant page can surface its siblings for multi-page queries.
 
 ## Score on public query set
+
+## Video presentation
+
+[Link to video presentation](PASTE_VIDEO_LINK_HERE)
