@@ -1,4 +1,16 @@
-"""Embedding utilities (sentence-transformers/all-MiniLM-L6-v2 only)."""
+"""
+Embedding utilities for Section B retrieval.
+
+Uses the required sentence-transformers model:
+all-MiniLM-L6-v2
+
+Responsibilities:
+- Load the embedding model lazily.
+- Convert chunks into normalized embedding vectors.
+- Convert queries into the same vector space.
+- Return float32 numpy arrays for efficient retrieval.
+"""
+
 from __future__ import annotations
 
 from typing import List, Sequence
@@ -34,4 +46,10 @@ def embed_texts(texts: Sequence[str], *, batch_size: int = 256) -> np.ndarray:
 
 
 def embed_queries(queries: List[str], *, batch_size: int = 256) -> np.ndarray:
+    """
+    Embed user queries using the same encoder used for document chunks.
+
+    Keeping queries and chunks in the same vector space
+    enables semantic similarity retrieval.
+    """
     return embed_texts(queries, batch_size=batch_size)
