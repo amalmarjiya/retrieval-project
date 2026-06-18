@@ -53,7 +53,6 @@ All required artifacts are included in this repository under `artifacts/`
 These are loaded directly at query time; **no rebuild is required** to run
 `scripts/eval_public.py`.
 
-## Repository structure
 
 ## Repository structure
 
