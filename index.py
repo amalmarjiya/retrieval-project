@@ -1,4 +1,19 @@
-"""Offline index build and load."""
+"""
+Offline index construction and loading for Section B.
+
+This module is used before evaluation to build the retrieval artifacts.
+
+Build step:
+1. Load all Wikipedia entries.
+2. Split each entry into chunks.
+3. Embed every chunk using MiniLM.
+4. Save vectors and metadata under artifacts/.
+5. Build the BM25 lexical index.
+
+Why offline?
+The autograder does not rebuild the index. It only calls run(queries),
+so all expensive corpus processing must be done in advance.
+"""
 from __future__ import annotations
 
 import json
