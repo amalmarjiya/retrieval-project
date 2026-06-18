@@ -56,42 +56,24 @@ These are loaded directly at query time; **no rebuild is required** to run
 
 ## Repository structure
 retrieval-project/
-
 ├── main.py                    # Entry point: run(queries) called by autograder
-
 ├── chunk.py                   # Section-aware chunking logic
-
 ├── embed.py                   # MiniLM embedding wrapper
-
 ├── index.py                   # Index build and load
-
 ├── lexical.py                 # BM25 index build and load
-
 ├── retrieve.py                # Hybrid scoring and ranking
-
 ├── utils.py                   # Shared helpers
-
 ├── eval.py                    # NDCG evaluation logic
-
 ├── build_page_signatures.py   # Generates artifacts/page_signatures.json
-
 ├── requirements.txt
-
 ├── scripts/
-
 │   ├── build_index.py         # Offline index build (not run at grading time)
-
 │   └── eval_public.py         # Self-evaluation on public queries
-
 └── artifacts/                 # Prebuilt index files (Git LFS, required for grading)
-
-├── index_vectors.npy
-
-├── index_meta.json
-
-├── bm25_index.json
-
-└── page_signatures.json
+    ├── index_vectors.npy
+    ├── index_meta.json
+    ├── bm25_index.json
+    └── page_signatures.json
 
 ## Setup
 
