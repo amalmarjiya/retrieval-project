@@ -14,8 +14,6 @@ Desktop/
 notebooks/
 Section B.zip
 dead_artifacts/
-artifacts/*.npy
-artifacts/*.json
 evaluation.py
 naive_vector_index.py
 student_vector_index_skeleton.py

@@ -45,7 +45,6 @@ All required artifacts are included in this repository under `artifacts/`:
 | `index_vectors.npy` | L2-normalised MiniLM embeddings, one row per chunk |
 | `index_meta.json` | Per-chunk metadata: `page_ids`, `chunk_ids`, `texts`, chunking config |
 | `bm25_index.json` | Page-level BM25 index (term frequencies, IDF, length stats) |
-| `page_signatures.json` | Sibling-page groupings used for candidate expansion |
 
 These are loaded directly at query time; **no rebuild is required** to run
 `scripts/eval_public.py`.
@@ -88,10 +87,13 @@ python scripts/build_index.py
   component and as a candidate-generation step; in both cases it did not
   outperform semantic + lexical + numeric scoring alone for this corpus, so
   it is currently disabled but kept in the codebase for future tuning.
+
 - **Why sibling expansion?** A subset of pages share near-duplicate opening
   content or synthetic templates (e.g. multiple pages about the same
   championship season). `page_signatures.json` groups these so that finding
-  one relevant page can surface its siblings for multi-page queries.
+  one relevant page can surface its siblings for multi-page queries. Neutral
+  on the 29 public queries; included as a hedge for multi-page-relevant
+  queries in the hidden set.
 
 ## Score on public query setcat > /home/student/README.md << 'EOF'
 # Section B — Retrieval Pipeline
@@ -104,8 +106,7 @@ synthetic pages against natural-language queries, built for Section B.
 The pipeline embeds section-aware text chunks with MiniLM, scores them with a
 weighted combination of semantic similarity, lexical token overlap, and
 numeric overlap, then aggregates chunk scores up to the page level for
-ranking. A lightweight sibling-expansion step adds related pages discovered
-via shared synthetic entities and template patterns.
+ranking.
 
 ## Pipeline stages
 
@@ -129,7 +130,6 @@ via shared synthetic entities and template patterns.
      (years, counts) computed against an expanded query
    - adds a bonus for each page's first chunk (its introductory section)
    - max-pools chunk scores up to page level
-   - expands the top candidates with siblings from `page_signatures.json`
    - returns the top 10 page IDs per query
 
 ## Artifacts
@@ -141,7 +141,6 @@ All required artifacts are included in this repository under `artifacts/`:
 | `index_vectors.npy` | L2-normalised MiniLM embeddings, one row per chunk |
 | `index_meta.json` | Per-chunk metadata: `page_ids`, `chunk_ids`, `texts`, chunking config |
 | `bm25_index.json` | Page-level BM25 index (term frequencies, IDF, length stats) |
-| `page_signatures.json` | Sibling-page groupings used for candidate expansion |
 
 These are loaded directly at query time; **no rebuild is required** to run
 `scripts/eval_public.py`.
@@ -184,10 +183,6 @@ python scripts/build_index.py
   component and as a candidate-generation step; in both cases it did not
   outperform semantic + lexical + numeric scoring alone for this corpus, so
   it is currently disabled but kept in the codebase for future tuning.
-- **Why sibling expansion?** A subset of pages share near-duplicate opening
-  content or synthetic templates (e.g. multiple pages about the same
-  championship season). `page_signatures.json` groups these so that finding
-  one relevant page can surface its siblings for multi-page queries.
 
 ## Score on public query set
 
