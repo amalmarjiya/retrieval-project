@@ -7,7 +7,6 @@ from pathlib import Path
 from typing import List, Optional
 
 import numpy as np
-from scipy.sparse import csr_matrix
 
 from embed import embed_queries
 from index import INDEX_META_NAME, load_index
@@ -128,30 +127,36 @@ def expand_query(query):
 
 
 def _sparse_overlap(query_token_lists, chunk_token_lists):
-    all_tokens = sorted({t for lst in query_token_lists + chunk_token_lists for t in lst})
-    tok_idx = {t: i for i, t in enumerate(all_tokens)}
-    V  = len(all_tokens)
+    """Fraction of each query's unique tokens that also appear in each chunk.
+
+    Pure-numpy/standard-library implementation (no scipy dependency).
+    Builds an inverted index token -> set of chunk indices containing it,
+    then for each query sums chunk hit-counts via np.add.at, which is
+    equivalent to the scipy sparse matmul this replaces but avoids the
+    scipy.sparse import entirely.
+    """
     n_q = len(query_token_lists)
     n_c = len(chunk_token_lists)
 
-    rows, cols = [], []
+    token_to_chunks: dict[str, list[int]] = {}
     for ci, toks in enumerate(chunk_token_lists):
         for t in set(toks):
-            rows.append(ci)
-            cols.append(tok_idx[t])
-    C = csr_matrix((np.ones(len(rows), dtype=np.float32), (rows, cols)), shape=(n_c, V))
+            token_to_chunks.setdefault(t, []).append(ci)
 
-    rows, cols, q_sizes = [], [], []
+    result = np.zeros((n_q, n_c), dtype=np.float32)
     for qi, toks in enumerate(query_token_lists):
         unique = set(toks)
+        q_size = max(len(unique), 1)
+        if not unique:
+            continue
+        row = result[qi]
         for t in unique:
-            rows.append(qi)
-            cols.append(tok_idx[t])
-        q_sizes.append(max(len(unique), 1))
-    Q = csr_matrix((np.ones(len(rows), dtype=np.float32), (rows, cols)), shape=(n_q, V))
+            chunk_idxs = token_to_chunks.get(t)
+            if chunk_idxs:
+                row[chunk_idxs] += 1.0
+        row /= q_size
 
-    intersect = (Q @ C.T).toarray()
-    return intersect / np.array(q_sizes, dtype=np.float32)[:, None]
+    return result
 
 
 def _number_overlap(queries, texts):
