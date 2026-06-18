@@ -111,4 +111,5 @@ query_phase_time ~88s (CPU), well under the GPU time limit
 
 ## Video presentation
 
-[Link to video presentation]: https://drive.google.com/file/d/1RPBA-Viuve0YIvxJmTlF_ZPxvbTMgVt5/view?usp=drive_link
+[Link to video presentation]:
+https://drive.google.com/file/d/1RPBA-Viuve0YIvxJmTlF_ZPxvbTMgVt5/view?usp=drive_link
