@@ -18,7 +18,7 @@ TOKEN_RE  = re.compile(r"[a-z0-9]+")
 NUMBER_RE = re.compile(r"\d[\d,\.]*[a-z]*")
 
 LEXICAL_WEIGHT = 0.08
-NUMBER_WEIGHT     = 0.70
+NUMBER_WEIGHT     = 0.50
 BM25_WEIGHT       = 0.0
 FIRST_CHUNK_BONUS = 0.30
 
