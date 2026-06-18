@@ -1,0 +1,26 @@
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+build_log.txt
+build.log
+*.log
+.cache/
+.config/
+.vscode/
+.azureml/
+.dotnet/
+.sparkmagic/
+Desktop/
+notebooks/
+Section B.zip
+dead_artifacts/
+artifacts/*.npy
+artifacts/*.json
+evaluation.py
+naive_vector_index.py
+student_vector_index_skeleton.py
+vector_index.py
+vector_index_backup.py
+build.log
+Section B.zip
+scripts/eval_scenario*.py
