@@ -1,4 +1,17 @@
-"""Section-aware chunking - our own implementation."""
+"""
+Section-aware chunking for Wikipedia pages.
+
+Design:
+- Pages with <= 300 words remain a single chunk.
+- Longer pages are split by detected section headings.
+- Each section is chunked using a 250-word sliding window
+  with 50-word overlap.
+
+Motivation:
+Long Wikipedia pages often contain multiple topics.
+Chunking allows retrieval to focus on relevant sections
+instead of embedding an entire page.
+"""
 from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Dict, List
